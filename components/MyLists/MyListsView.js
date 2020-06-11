@@ -8,13 +8,13 @@ const CardView = styled.View`
   border-radius: 10px;
   background-color: white;
   padding : 25px;
-  margin: 10px
+  margin: 10px;
   ${Platform.select({
     ios: css`shadow-color: #000;
     shadow-offset: {width: 0, height: -1};
     shadow-opacity: 0.5;
     shadow-radius: 5;`,
-    android: css`elevation: 6;`
+    android: css`elevation: 3;`
   })}
 `;
 const TitleView = styled.View`

@@ -22,7 +22,7 @@ function getHeaderTitle(route) {
     case 'Search':
       return ()=><SearchBar/>;
     case 'News':
-      return 'News';
+      return null;
     case 'Activity':
       return 'Activity';
   }
@@ -43,6 +43,14 @@ export default function BottomTabNavigator({ navigation, route }){
     )
   });
 
+  console.log(route);
+  
+  // if(route){
+
+  // }else{
+
+  // }
+  
   return(
     <BottomTab.Navigator
       initialRouteName={INITIAL_ROUTE_NAME}

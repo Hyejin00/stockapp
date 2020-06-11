@@ -1,11 +1,7 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 
-// HomeScreen.navigationOptions = {
-//   header: 'Home',
-// };
-
-export default function HomeScreen(){
+export default function SearchScreen(){
   return (
     <View>
       <Text>Search!</Text>

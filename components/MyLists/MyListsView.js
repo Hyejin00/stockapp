@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
-import styled from 'styled-components/native';
-import {TouchableWithoutFeedback, View, Text} from 'react-native';
+import styled, { css } from 'styled-components/native';
+import {TouchableWithoutFeedback, FlatList, Platform} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import CompanyList from './CompanyList';
 
 const CardView = styled.View`
   border-radius: 10px;
   background-color: white;
   padding : 25px;
+  margin: 10px
+  ${Platform.select({
+    ios: css`shadow-color: #000;
+    shadow-offset: {width: 0, height: -1};
+    shadow-opacity: 0.5;
+    shadow-radius: 5;`,
+    android: css`elevation: 6;`
+  })}
 `;
 const TitleView = styled.View`
   display: flex;
@@ -35,20 +44,12 @@ function NameContents({name, count}){
   );
 }
 
-function ContentsView(){
-  return(
-    <View>
-      <Text>zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</Text>
-    </View>
-  );
-}
-
-export default function MyListsView(){
+function MyList({title, companies}){
   const [istoggled, setIsToggled] = useState(false);
   return (
     <CardView>
       <TitleView>
-        <NameContents name='ㄹㄹ' count = {36}/>
+        <NameContents name={title} count = {companies.length}/>
         <TouchableWithoutFeedback onPress={()=>{
           setIsToggled((cur)=>{
             return !cur
@@ -60,7 +61,17 @@ export default function MyListsView(){
             }
         </TouchableWithoutFeedback>
       </TitleView>
-      {istoggled && <ContentsView />}
+      {istoggled && <CompanyList companylist={companies}/>}
     </CardView>
+  );
+}
+
+export default function MyListsView({mylist}){
+  return (
+    <FlatList
+      data={mylist}
+      renderItem={({ item }) => <MyList title={item.title} companies = {item.companies}/>}
+      keyExtractor={item => item.id}
+    />
   );
 }

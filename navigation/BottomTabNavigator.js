@@ -8,6 +8,7 @@ import ActivityScreen from '../screens/ActivityScreen';
 import Colors from '../constants/Colors';
 import { TouchableWithoutFeedback } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import SearchBar from '../components/SearchBar';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -19,7 +20,7 @@ function getHeaderTitle(route) {
     case 'Home':
       return 'Home';
     case 'Search':
-      return 'Search';
+      return ()=><SearchBar/>;
     case 'News':
       return 'News';
     case 'Activity':

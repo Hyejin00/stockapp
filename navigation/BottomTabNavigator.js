@@ -6,7 +6,7 @@ import SearchScreen from '../screens/SearchScreen';
 import NewsScreen from '../screens/NewsScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import Colors from '../constants/Colors';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, Image, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBar from '../components/SearchBar';
 
@@ -22,7 +22,7 @@ function getHeaderTitle(route) {
     case 'Search':
       return ()=><SearchBar/>;
     case 'News':
-      return null;
+      return 'News';
     case 'Activity':
       return 'Activity';
   }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled, { css } from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
 import {TouchableWithoutFeedback, FlatList, Platform} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CompanyList from './CompanyList';
@@ -17,6 +17,7 @@ const CardView = styled.View`
     android: css`elevation: 3;`
   })}
 `;
+
 const TitleView = styled.View`
   display: flex;
   flex-direction: row;

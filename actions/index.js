@@ -51,3 +51,26 @@ export function fetchPrice (symbol){
     });
   }
 }
+
+export function fetchMyList(symbols){
+  return (dispatch) => {
+    dispatch({type:'START_LOADING'});
+    Promise.all(
+      symbols.map(async (symbol)=>{
+        return {
+          symbol,
+          price: (await getPrice(symbol)).data
+        }
+      })
+    ).then((res)=>{
+      console.log(res);
+      dispatch({
+        type:'FETCH_LIST',
+        payload:res
+      });
+      dispatch({
+        type:'END_LOADING'
+      });
+    })
+  }
+}

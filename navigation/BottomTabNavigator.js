@@ -7,17 +7,18 @@ import NewsScreen from '../screens/NewsScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import QuoteScreen from '../screens/QuoteScreen';
 import Colors from '../constants/Colors';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, AsyncStorage } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBar from '../components/SearchBar';
+import { useDispatch,  } from 'react-redux';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
 
 function getHeaderTitle(route,navigation) {
   const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
-  
+
   switch (routeName) {
     case 'Home':
       return 'Home';
@@ -28,13 +29,78 @@ function getHeaderTitle(route,navigation) {
       }else{
         return ()=><SearchBar navigation = { navigation }/>;
       }
-      
     case 'News':
       return 'News';
     case 'Activity':
       return 'Activity';
+  }
+}
+function getHeaderLeft(route,navigation) {
+  const routeName = route.state?.routes[route.state.index].state?.routes[route.state?.routes[route.state.index].state.index].name ?? INITIAL_ROUTE_NAME;
+  const [cart, setCart] = React.useState(false);
+  const dispatch = useDispatch();
+  
+  switch (routeName) {
     case 'Quote':
-      return route.state.routes[route.state.index].params.symbol;
+      const newData = route.state?.routes[route.state.index].state.routes[1].params.symbol;
+      const my_list_symbol = route.state?.routes[route.state.index].state.routes[1].params.my_list;
+      my_list_symbol.map(dt=>{if(dt===newData){setCart(true);}});
+
+      if(cart){
+        return (
+          ()=><TouchableWithoutFeedback
+          onPress={()=>{
+            AsyncStorage.getItem('mylist').then(data =>{
+              const Data = JSON.parse(data);
+              if(Data){
+                const filterData = Data.filter(sym=>sym !== newData);
+                AsyncStorage.setItem('mylist', JSON.stringify(filterData));
+                dispatch({type:'CHANGE_LIST', payload:filterData});
+              }
+            })
+          }}>
+          <Ionicons
+          name= 'ios-star'
+          size={24}
+          color='yellow'
+          style={{marginLeft:20}}/>
+        </TouchableWithoutFeedback>
+        );
+      }else{
+        return (
+          ()=><TouchableWithoutFeedback
+            onPress={()=>{
+              AsyncStorage.getItem('mylist').then(data =>{
+                if(data){
+                  const addData = [newData,...JSON.parse(data)];
+                  console.log(addData);
+                  AsyncStorage.setItem('mylist', JSON.stringify(addData));
+                  dispatch({type:'CHANGE_LIST', payload:addData});
+                }else{
+                  AsyncStorage.setItem('mylist', JSON.stringify([newData]));
+                  dispatch({type:'CHANGE_LIST', payload:[newData]});
+                }
+                setCart(true);
+              })
+            }}>
+            <Ionicons
+            name= 'ios-star-outline'
+            size={24}
+            color='black'
+            style={{marginLeft:20}}/>
+          </TouchableWithoutFeedback>
+        );
+      }
+    default:
+      return ()=>(
+        <TouchableWithoutFeedback
+          onPress={()=>{navigation.openDrawer()}}>
+          <Ionicons
+          name= 'md-menu'
+          size={24}
+          color='black'
+          style={{marginLeft:20}}/>
+        </TouchableWithoutFeedback>);
   }
 }
 
@@ -53,22 +119,12 @@ function SearchStackScreen(){
   );
 }
 
-
 export default function BottomTabNavigator({ navigation, route }){
   navigation.setOptions({ 
     headerTitle: getHeaderTitle(route, navigation),
-    headerLeft: ()=>(
-    <TouchableWithoutFeedback
-      onPress={()=>{navigation.openDrawer()}}>
-      <Ionicons
-      name= 'md-menu'
-      size={24}
-      color='black'
-      style={{marginLeft:20}}/>
-    </TouchableWithoutFeedback>
-    )
+    headerLeft: getHeaderLeft(route, navigation)
   });
-  
+
   return(
     <BottomTab.Navigator
       initialRouteName={INITIAL_ROUTE_NAME}

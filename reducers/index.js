@@ -4,7 +4,9 @@ const initalState = {
   loading: false,
   error:null,
   general_news:[],
-  quote:null
+  my_list:null,
+  my_list_symbol:[],
+  quote:null,
 }
 
 const reducer = produce((state, action)=>{
@@ -27,6 +29,10 @@ const reducer = produce((state, action)=>{
       break;
     case 'FETCH_PRICE':
       state.quote = action.payload;
+    case 'FETCH_LIST':
+      state.my_list = action.payload;
+    case 'CHANGE_LIST':
+      state.my_list_symbol = action.payload;
     default:
       break;
   }

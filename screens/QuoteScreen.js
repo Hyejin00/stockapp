@@ -14,7 +14,6 @@ export default function QuoteScreen({ route }){
 
   const dispatch = useDispatch();
   const loading = useSelector(state => state.loading);
-  const error = useSelector(state => state.error);
   const quote = useSelector(state => state.quote);
 
   console.log(quote);

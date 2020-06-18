@@ -6,11 +6,15 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import rootReducer from './reducers/index';
+import { AsyncStorage } from 'react-native';
 
 const Drawer = createDrawerNavigator();
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
-
+AsyncStorage.getItem('mylist').then(data =>{
+  const mylist = JSON.parse(data || '[]');
+  store.dispatch({type:'CHANGE_LIST', payload:mylist});
+});
 
 export default function App() {
   return (

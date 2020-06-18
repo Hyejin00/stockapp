@@ -38,8 +38,8 @@ export default function CompanyList ({companylist}) {
   return (
     <FlatList 
       data = {companylist}
-      renderItem={({ item }) => <Stock title={item.title} price = {item.price} increase = {item.increase}/>}
-      keyExtractor={item => item.id}
+      renderItem={({ item }) => <Stock title={item.symbol} price = {item.price} increase = {0}/>}
+      keyExtractor={item => item.symbol}
     />
   );
 }

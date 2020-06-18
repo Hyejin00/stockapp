@@ -2,6 +2,7 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styled, { css } from 'styled-components/native';
 import { Platform } from 'react-native';
+import {useSelector} from 'react-redux';
 
 const View = styled.View`
 display:flex;
@@ -24,11 +25,13 @@ const TextInput = styled.TextInput`
 
 export default function SearchBar({ navigation }){
   const [symbol, setSymbol] = React.useState('');
+  const my_list_symbol = useSelector(state => state.my_list_symbol);
+
   return(
     <View>
       <Ionicons name='ios-search' size = {26} style={{marginRight:10, marginLeft:5}}color = 'black'/>
       <TextInput onChangeText={text => setSymbol(text)} value={symbol} placeholder='write Symbol..' onSubmitEditing={(e)=>{
-        navigation.navigate('Quote', {symbol: e.nativeEvent.text});
+        navigation.navigate('Quote', {symbol: e.nativeEvent.text, my_list: my_list_symbol});
       }}/>
     </View>
   );

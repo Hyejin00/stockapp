@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Text, View} from 'react-native';
+import {Text} from 'react-native';
 
 const DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'S&P Futures',
+    title: 'S&P Futureszzzzzzzzzzzzzzzzzzzzz',
     price:262500
   },
   {
@@ -32,8 +32,13 @@ const DATA = [
 
 const FlatList = styled.FlatList`
   height: 14%;
-  background-color: red;
   flex-grow : 0;
+`;
+const View = styled.View`
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  width:85px;
 `;
 
 function Market({title, price}){

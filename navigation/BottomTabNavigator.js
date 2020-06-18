@@ -5,32 +5,58 @@ import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import NewsScreen from '../screens/NewsScreen';
 import ActivityScreen from '../screens/ActivityScreen';
+import QuoteScreen from '../screens/QuoteScreen';
 import Colors from '../constants/Colors';
-import { TouchableWithoutFeedback, Image, StyleSheet } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBar from '../components/SearchBar';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
 
-function getHeaderTitle(route) {
+function getHeaderTitle(route,navigation) {
   const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
-
+  
   switch (routeName) {
     case 'Home':
       return 'Home';
     case 'Search':
-      return ()=><SearchBar/>;
+      console.log(route);
+      if(route.state.routes[route.state.index].state?.routes[route.state?.routes[route.state.index].state.index].name === 'Quote'){
+        return route.state?.routes[route.state.index].state.routes[1].params.symbol;
+      }else{
+        return ()=><SearchBar navigation = { navigation }/>;
+      }
+      
     case 'News':
       return 'News';
     case 'Activity':
       return 'Activity';
+    case 'Quote':
+      return route.state.routes[route.state.index].params.symbol;
   }
 }
 
+const SearchStack = createStackNavigator();
+
+function SearchStackScreen(){
+  return (
+    <SearchStack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}
+    >
+      <SearchStack.Screen name="Search" component={SearchScreen} />
+      <SearchStack.Screen name="Quote" component={QuoteScreen} />
+    </SearchStack.Navigator>
+  );
+}
+
+
 export default function BottomTabNavigator({ navigation, route }){
   navigation.setOptions({ 
-    headerTitle: getHeaderTitle(route),
+    headerTitle: getHeaderTitle(route, navigation),
     headerLeft: ()=>(
     <TouchableWithoutFeedback
       onPress={()=>{navigation.openDrawer()}}>
@@ -42,14 +68,6 @@ export default function BottomTabNavigator({ navigation, route }){
     </TouchableWithoutFeedback>
     )
   });
-
-  console.log(route);
-  
-  // if(route){
-
-  // }else{
-
-  // }
   
   return(
     <BottomTab.Navigator
@@ -68,7 +86,7 @@ export default function BottomTabNavigator({ navigation, route }){
       />
       <BottomTab.Screen
         name="Search"
-        component={SearchScreen}
+        component={SearchStackScreen}
         options={{
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-search" />,
         }}

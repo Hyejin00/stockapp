@@ -1,38 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { ActivityIndicator } from "react-native";
 import NewsLists from '../components/NewsLists';
 import styled from 'styled-components/native';
 import Colors from '../constants/Colors';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchGeneralNews } from '../actions/index';
 
 const View = styled.View`
-  flex:1
+  flex:1;
+  align-items: center;
+  justify-content: center;
   background-color: ${props => props.background};
 `;
 
-const DATA = [
-  {
-    id:'1',
-    headline:'ASDFASDFASDFASDFASDFASDFASDFADSFSADFASDFSDASDFASDFSDFADSFADSFADSFASDFSDF',
-    press:'HYejincompanastasdfasdfa~~~~',
-    photo:'https://img1.daumcdn.net/thumb/R720x0/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fliveboard%2Frealfood%2F50b2b0b6ecf04c938d4a1f2b0c934204.jpg'
-  },
-  {
-    id:'2',
-    headline:'ASDFASDFASDFASDFASDFASDFASDFADSFSADFASDFSDASDFASDFSDFADSFADSFADSFASDFSDF',
-    press:'HYejincompanastasdfasdfa~~~~',
-    photo:'https://img1.daumcdn.net/thumb/R720x0/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fliveboard%2Frealfood%2F50b2b0b6ecf04c938d4a1f2b0c934204.jpg'
-  },
-  {
-    id:'3',
-    headline:'ASDFASDFASDFASDFASDFASDFASDFADSFSADFASDFSDASDFASDFSDFADSFADSFADSFASDFSDF',
-    press:'HYejincompanastasdfasdfa~~~~',
-    photo:'https://img1.daumcdn.net/thumb/R720x0/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fliveboard%2Frealfood%2F50b2b0b6ecf04c938d4a1f2b0c934204.jpg'
-  }
-];
-
 export default function NewScreen(){
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.loading);
+  const general_news = useSelector(state => state.general_news);
+  const error = useSelector(state => state.error);
+
+  useEffect(()=>{
+    dispatch(fetchGeneralNews());
+    // eslint-disable-next-line
+  },[]);
+
+  if(loading){
+    return(
+      <View background = {Colors.background}>
+        <ActivityIndicator size="large" color="#00ff00" />
+      </View>
+    );
+  }
   return (
     <View background = {Colors.background}>
-      <NewsLists newsdata = {DATA}/>
+      <NewsLists newsdata = {general_news}/>
     </View>
   );
 }

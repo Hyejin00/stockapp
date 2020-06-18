@@ -29,9 +29,9 @@ function ScreenTitle ({title}){
   );
 }
 
-export default function HeadingText ({title, more, recent}){
+export default function HeadingText ({title, more, recent, color}){
   return (
-    <HeadingView background = {Colors.background}>
+    <HeadingView background = {color?color:Colors.background}>
       <ScreenTitle title = {title}/>
       {more && 
       <TouchableWithoutFeedback>

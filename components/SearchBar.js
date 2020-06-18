@@ -1,7 +1,7 @@
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styled, { css } from 'styled-components/native';
-import {TextInput, Platform} from 'react-native';
+import { Platform } from 'react-native';
 
 const View = styled.View`
 display:flex;
@@ -18,12 +18,18 @@ ${Platform.select({
 })}
 `;
 
-export default function SearchBar(){
-  const [value, onChangeText] = React.useState('');
+const TextInput = styled.TextInput`
+  width:100%;
+`;
+
+export default function SearchBar({ navigation }){
+  const [symbol, setSymbol] = React.useState('');
   return(
     <View>
       <Ionicons name='ios-search' size = {26} style={{marginRight:10, marginLeft:5}}color = 'black'/>
-      <TextInput onChangeText={text => onChangeText(text)} value={value} placeholder='write Symbol..'/>
+      <TextInput onChangeText={text => setSymbol(text)} value={symbol} placeholder='write Symbol..' onSubmitEditing={(e)=>{
+        navigation.navigate('Quote', {symbol: e.nativeEvent.text});
+      }}/>
     </View>
   );
 }

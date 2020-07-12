@@ -70,18 +70,7 @@ function getHeaderLeft(route,navigation) {
         return (
           ()=><TouchableWithoutFeedback
             onPress={()=>{
-              AsyncStorage.getItem('mylist').then(data =>{
-                if(data){
-                  const addData = [newData,...JSON.parse(data)];
-                  console.log(addData);
-                  AsyncStorage.setItem('mylist', JSON.stringify(addData));
-                  dispatch({type:'CHANGE_LIST', payload:addData});
-                }else{
-                  AsyncStorage.setItem('mylist', JSON.stringify([newData]));
-                  dispatch({type:'CHANGE_LIST', payload:[newData]});
-                }
-                setCart(true);
-              })
+              setCart(true);
             }}>
             <Ionicons
             name= 'ios-star-outline'

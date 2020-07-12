@@ -39,7 +39,10 @@ export default function HomeScreen(){
   const DATA = [{
     id:'1',
     title:'My List',
-    companies: my_list?my_list:[]
+    companies: [{
+      symbol: 'APPL',
+      price: 15
+    }]
   }];
 
   if(loading){
